@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="pastel-pop">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RepurposeAI Studio // Media Content Repurposing with Brand Memory</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Studio Header -->
+  <header class="studio-header">
+    <div class="brand-badge-group">
+      <div class="logo-lockup" id="logoBtn">
+        <div class="logo-icon">⚡</div>
+        <span>REPURPOSE<span style="color:var(--brand-primary);">.AI</span></span>
+      </div>
+
+      <!-- Brand Selector -->
+      <select id="brandSelector" class="brand-selector" title="Select Brand Profile"></select>
+    </div>
+
+    <!-- Desktop Navigation Segmented Control -->
+    <nav class="desktop-nav-tabs">
+      <button class="nav-tab-btn active" data-tab="tab-studio">📱 Studio</button>
+      <button class="nav-tab-btn" data-tab="tab-clips">✂️ Clips & Beats</button>
+      <button class="nav-tab-btn" data-tab="tab-brand">🎨 Brand & Taboos</button>
+      <button class="nav-tab-btn" data-tab="tab-calendar">📅 Calendar</button>
+      <button class="nav-tab-btn" data-tab="tab-settings">⚙️ Settings & Lab</button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <!-- Theme Switcher -->
+      <select id="themeSelector" class="theme-pill-select" title="Color Theme">
+        <option value="pastel-pop">🌸 Pastel Pop</option>
+        <option value="cotton-candy">🍦 Cotton Candy</option>
+        <option value="sunshine">☀️ Sunshine Glow</option>
+        <option value="midnight">🌙 Midnight Cyber</option>
+      </select>
+
+      <button id="btnIngestNew" class="btn btn-primary">+ Ingest Media</button>
+    </div>
+  </header>
+
+  <!-- Main Workspace Content (Tabbed) -->
+  <div class="app-content">
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: STUDIO (HERO WORKSPACE - Clean 2-column or stacked) -->
+    <!-- ======================================================== -->
+    <section id="tab-studio" class="tab-view active">
+      <div class="studio-grid">
+        
+        <!-- Left: Video Player Card & Voice Synthesizer -->
+        <div class="player-card">
+          
+          <div class="stage-toolbar">
+            <div class="aspect-controls">
+              <button class="aspect-btn active" data-ratio="9:16">📱 9:16</button>
+              <button class="aspect-btn" data-ratio="1:1">⏹️ 1:1</button>
+              <button class="aspect-btn" data-ratio="16:9">🖥️ 16:9</button>
+            </div>
+            <div style="font-size:0.75rem; font-weight:700; color:var(--brand-primary); display:flex; align-items:center; gap:6px;">
+              <span>Kinetic Karaoke</span>
+              <span style="font-size:0.9rem;">✨</span>
+            </div>
+          </div>
+
+          <!-- Video Mockup Frame -->
+          <div id="videoStageContainer" class="video-stage-container aspect-9-16">
+            <div id="watermarkBadge" class="watermark-badge watermark-top-right">NEXUS // AI</div>
+            <video id="stageVideo" class="stage-video" playsinline preload="auto">
+              Your browser does not support HTML5 video.
+            </video>
+            <div id="subtitleOverlay" class="kinetic-subtitle-overlay"></div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="video-controls-bar">
+            <div class="controls-row-top">
+              <button id="btnPlayPause" class="btn btn-primary" style="padding: 6px 14px;">▶ Play Clip</button>
+              <button id="btnToggleVoice" class="voice-speech-toggle active" title="Toggle AI Voice Audio">
+                <span>🔊 Voice Audio:</span>
+                <strong id="voiceStatusText">ON</strong>
+              </button>
+              <button id="btnTestSound" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.72rem;" title="Test Audio Output">🔔 Test Sound</button>
+              <span id="clipStatusBadge" class="status-pill status-approved">Approved</span>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:4px;">
+              <div class="timeline-slider-container" style="flex:1;">
+                <input type="range" id="timelineSlider" class="timeline-slider" step="0.1" value="0">
+                <span id="timeReadout" class="time-readout">00:00 / 00:00</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:4px;">
+                <button id="btnMuteToggle" class="btn btn-ghost" style="padding:2px 4px; font-size:0.85rem;" title="Mute/Unmute">🔊</button>
+                <input type="range" id="volumeSlider" min="0" max="100" value="100" class="timeline-slider" style="width:60px;" title="Master Volume">
+              </div>
+            </div>
+          </div>
+
+          <!-- Synchronized Transcript -->
+          <div style="width:100%; margin-top:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span style="font-size:0.75rem; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Click Word to Seek Playback</span>
+              <span style="font-size:0.7rem; color:var(--brand-secondary); font-weight:600;">Spoken aloud in real-time</span>
+            </div>
+            <div id="transcriptContainer" class="transcript-box"></div>
+          </div>
+
+        </div>
+
+        <!-- Right: Platform Copy & Taboo Enforcer -->
+        <div class="studio-copy-panel">
+          
+          <div class="panel-section-title">
+            <div class="platform-pills-bar">
+              <button class="platform-tab active" data-platform="tiktok">📱 TikTok / Reels</button>
+              <button class="platform-tab" data-platform="linkedin">💼 LinkedIn</button>
+              <button class="platform-tab" data-platform="twitter">🐦 X / Threads</button>
+              <button class="platform-tab" data-platform="newsletter">📰 Newsletter</button>
+            </div>
+          </div>
+
+          <!-- Persona Tone Selector -->
+          <div class="persona-tone-selector-row">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:0.8rem; font-weight:800; color:var(--text-muted);">Persona:</span>
+              <select id="personaSelect" class="brand-selector" style="padding:4px 10px; font-size:0.78rem;"></select>
+            </div>
+            <button id="btnRegenerate" class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;">⚡ Regenerate</button>
+          </div>
+
+          <!-- Taboo & Anti-Pattern Alert Box -->
+          <div id="tabooBox" class="taboo-warning-box clean">
+            <div class="taboo-header">
+              <span id="tabooTitle">🛡️ Brand Voice Compliant (Zero Taboos)</span>
+              <button id="btnSanitize" class="btn btn-secondary" style="display:none; padding:2px 8px; font-size:0.7rem; color:#dc2626;">Auto-Sanitize</button>
+            </div>
+            <div id="tabooPills" class="taboo-pill-list"></div>
+          </div>
+
+          <!-- Hook Input -->
+          <div>
+            <label style="font-size:0.75rem; font-weight:800; color:var(--text-dim); text-transform:uppercase;">Viral Hook (First 3 Seconds)</label>
+            <input type="text" id="inputHook" class="copy-input-hook" style="margin-top:4px;">
+          </div>
+
+          <!-- Body Textarea -->
+          <div>
+            <label style="font-size:0.75rem; font-weight:800; color:var(--text-dim); text-transform:uppercase;">Caption Body</label>
+            <textarea id="textareaBody" class="copy-textarea-body" style="margin-top:4px;"></textarea>
+          </div>
+
+          <!-- Call to Action & Hashtags -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-dim); text-transform:uppercase;">Call To Action</label>
+              <input type="text" id="inputCta" class="copy-input-hook" style="font-size:0.82rem; margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-dim); text-transform:uppercase;">Hashtags</label>
+              <input type="text" id="inputHashtags" class="copy-input-hook" style="font-size:0.82rem; margin-top:4px;">
+            </div>
+          </div>
+
+          <!-- Continuous Brand Memory Delta Box -->
+          <div class="learning-flywheel-box">
+            <div>
+              <div style="font-size:0.8rem; font-weight:800; color:var(--brand-primary);">🧠 Continuous Brand Memory</div>
+              <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Teaches the brand your style whenever you edit copy.</div>
+            </div>
+            <button id="btnLearnEdits" class="btn btn-secondary" style="font-size:0.75rem; white-space:nowrap;">Learn from my edits</button>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display:flex; gap:12px; margin-top:auto; padding-top:10px;">
+            <button id="btnSchedulePost" class="btn btn-secondary" style="flex:1;">📅 Schedule</button>
+            <button id="btnPublishNow" class="btn btn-primary" style="flex:1;">🚀 1-Click Publish</button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: CLIPS & STORYBOARD (Clean, Spacious, No Squishing) -->
+    <!-- ======================================================== -->
+    <section id="tab-clips" class="tab-view">
+      <div class="clips-layout-grid">
+        
+        <!-- Left: Curated Moments List -->
+        <div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <h3 style="font-size:1.1rem; font-weight:800;">Curated High-Retention Moments</h3>
+            <span style="font-size:0.8rem; color:var(--text-dim);">Sorted by Virality Score</span>
+          </div>
+          <div id="clipList"></div>
+        </div>
+
+        <!-- Right: Spacious Storyboard Beats & Scene Breakdown -->
+        <div>
+          <div class="storyboard-full-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:12px;">
+              <div>
+                <h3 id="storyboardClipTitle" style="font-size:1.1rem; font-weight:800;">Clip Storyboard & Scene Cues</h3>
+                <p id="storyboardThesis" style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;"></p>
+              </div>
+              <button id="btnPlayFromClipsTab" class="btn btn-primary" style="font-size:0.78rem;">▶ Jump to Studio</button>
+            </div>
+
+            <h4 style="font-size:0.85rem; font-weight:800; color:var(--text-dim); text-transform:uppercase; margin-top:16px;">Visual Scene Transitions & Cues:</h4>
+            <div id="storyboardContainer" class="beats-flex-list"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: BRAND MEMORY & TABOOS                              -->
+    <!-- ======================================================== -->
+    <section id="tab-brand" class="tab-view">
+      <div class="brand-tab-container">
+        
+        <!-- Visual Identity -->
+        <div class="glass-box">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--brand-primary); margin-bottom:14px;">🎨 Visual Identity & Overlays</h3>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Primary Brand Color</label>
+              <input type="color" id="brandPrimaryColor" class="copy-input-hook" style="height:42px; padding:2px; margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Secondary Brand Color</label>
+              <input type="color" id="brandSecondaryColor" class="copy-input-hook" style="height:42px; padding:2px; margin-top:4px;">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Accent / Karaoke Color</label>
+              <input type="color" id="brandAccentColor" class="copy-input-hook" style="height:42px; padding:2px; margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Subtitle Style Preset</label>
+              <select id="brandSubtitleStyle" class="brand-selector" style="width:100%; height:42px; margin-top:4px;">
+                <option value="kinetic-karaoke">Kinetic Karaoke (Word Highlight)</option>
+                <option value="boxed-minimal">Boxed Minimal (Clean Backdrop)</option>
+                <option value="yellow-pop">Yellow Pop (High-Energy Punch)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Watermark / Logo Text</label>
+              <input type="text" id="brandLogoText" class="copy-input-hook" style="margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Watermark Placement</label>
+              <select id="brandLogoPlacement" class="brand-selector" style="width:100%; height:42px; margin-top:4px;">
+                <option value="top-right">Top Right</option>
+                <option value="top-left">Top Left</option>
+                <option value="bottom-right">Bottom Right</option>
+                <option value="bottom-left">Bottom Left</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Watermark Opacity (%)</label>
+            <input type="range" id="brandLogoOpacity" min="20" max="100" class="timeline-slider" style="margin-top:8px;">
+          </div>
+
+          <button id="btnSaveBrandGuide" class="btn btn-primary" style="width:100%;">Save Visual Identity</button>
+        </div>
+
+        <!-- Negative Constraints & Taboos -->
+        <div class="glass-box">
+          <h3 style="font-size:1.1rem; font-weight:800; color:#dc2626; margin-bottom:6px;">🚫 Anti-Pattern & Taboo Memory</h3>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">The system automatically rejects these banned buzzwords & clichés across all platforms:</p>
+          
+          <div id="bannedWordsList" class="taboo-pill-list" style="margin-bottom:14px;"></div>
+          
+          <div style="display:flex; gap:8px; margin-bottom:20px;">
+            <input type="text" id="newTabooInput" class="copy-input-hook" placeholder="Add custom banned word (e.g. 'unprecedented')...">
+            <button id="btnAddTabooWord" class="btn btn-secondary" style="white-space:nowrap;">+ Add Taboo</button>
+          </div>
+
+          <h4 style="font-size:0.9rem; font-weight:800; color:var(--brand-secondary); margin-bottom:8px;">🧠 Learned Editorial Rules (From Your Edits)</h4>
+          <div id="learnedEditsList"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: CALENDAR & QUEUE                                  -->
+    <!-- ======================================================== -->
+    <section id="tab-calendar" class="tab-view">
+      <div style="margin-bottom:16px;">
+        <h3 style="font-size:1.2rem; font-weight:800;">📅 Multi-Platform Publishing Queue</h3>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Content ready for direct 1-click publishing or scheduled distribution.</p>
+      </div>
+      <div id="calendarItemsList" class="calendar-grid"></div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: SETTINGS & LAB (Cleans up desktop clutter)         -->
+    <!-- ======================================================== -->
+    <section id="tab-settings" class="tab-view">
+      <div class="settings-grid">
+        
+        <!-- Brand Explainer & Architecture FAQ -->
+        <div class="glass-box">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--brand-primary); margin-bottom:10px;">ℹ️ Brand Profiles & Architecture Guide</h3>
+          
+          <div style="background:var(--bg-main); border:1px solid var(--border-strong); border-radius:12px; padding:12px; margin-bottom:12px;">
+            <div style="font-size:0.85rem; font-weight:800; color:var(--brand-primary);">🏢 Nexus AI Media vs 🚀 GrowthLab Studio</div>
+            <p style="font-size:0.78rem; color:var(--text-muted); margin-top:4px; line-height:1.4;">
+              • <strong>Nexus AI Media:</strong> Focused on deep tech, AI agents, and architecture. Uses Indigo/Purple/Gold palettes. Bans generic tech buzzwords (<em>delve, synergy, game-changer</em>).<br>
+              • <strong>GrowthLab Studio:</strong> Focused on SaaS, product-led growth, and marketing metrics. Uses Emerald/Cyan palettes. Bans get-rich-quick clichés (<em>hack, guru, passive income, skyrocket</em>).
+            </p>
+          </div>
+
+          <div style="background:var(--bg-main); border:1px solid var(--border-strong); border-radius:12px; padding:12px;">
+            <div style="font-size:0.85rem; font-weight:800; color:var(--brand-mint);">⚡ What is the "Smart Offline Engine"?</div>
+            <p style="font-size:0.78rem; color:var(--text-muted); margin-top:4px; line-height:1.4;">
+              Built for hackathon judges reviewing 4 to 5 days later. If API keys expire, quotas run out, or internet drops, the system seamlessly uses intelligent built-in heuristic NLP so the application <strong>never crashes</strong>.
+            </p>
+          </div>
+
+          <div style="margin-top:16px;">
+            <label style="font-size:0.75rem; font-weight:800; color:var(--text-muted);">Reset Everything</label>
+            <p style="font-size:0.75rem; color:var(--text-dim); margin-bottom:6px;">Reset brand memory, taboos, and calendar to clean demo defaults.</p>
+            <button id="btnResetDefaults" class="btn btn-secondary" style="color:#dc2626;">🔄 Reset to Factory Defaults</button>
+          </div>
+        </div>
+
+        <!-- Performance Feedback Simulator & Team Review -->
+        <div class="glass-box">
+          <h3 style="font-size:1.1rem; font-weight:800; color:var(--brand-secondary); margin-bottom:10px;">📈 Performance Feedback Loop Simulator</h3>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Simulate real audience engagement (views, completion rate) to watch the AI Hook Engine recalibrate future virality weights in memory.</p>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+            <div>
+              <label style="font-size:0.72rem; font-weight:800; color:var(--text-dim);">Simulated Views</label>
+              <input type="number" id="perfViews" class="copy-input-hook" value="125000">
+            </div>
+            <div>
+              <label style="font-size:0.72rem; font-weight:800; color:var(--text-dim);">Retention Rate (% past 20s)</label>
+              <input type="number" id="perfRetention" class="copy-input-hook" value="84">
+            </div>
+          </div>
+
+          <button id="btnRunPerformanceFeedback" class="btn btn-secondary" style="width:100%; margin-bottom:16px;">📊 Run Feedback Recalibration (+5% Boost)</button>
+
+          <h4 style="font-size:0.9rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">👥 Team Review & Multi-User Approval</h4>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary btn-set-status" data-status="draft">📝 Set Draft</button>
+            <button class="btn btn-secondary btn-set-status" data-status="in_review">⏳ Needs Review</button>
+            <button class="btn btn-success btn-set-status" data-status="approved">✅ Approve Clip</button>
+          </div>
+
+          <h4 style="font-size:0.9rem; font-weight:800; color:var(--text-main); margin-top:16px; margin-bottom:6px;">⚙️ Optional Gemini API Key</h4>
+          <input type="password" id="settingApiKey" class="copy-input-hook" placeholder="Optional AIzaSy... (leave blank for zero-downtime offline mode)">
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar (Screens < 768px) -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" data-tab="tab-studio">
+      <span class="mobile-nav-icon">📱</span>
+      <span>Studio</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="tab-clips">
+      <span class="mobile-nav-icon">✂️</span>
+      <span>Clips</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="tab-brand">
+      <span class="mobile-nav-icon">🎨</span>
+      <span>Brand</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="tab-calendar">
+      <span class="mobile-nav-icon">📅</span>
+      <span>Queue</span>
+    </button>
+    <button class="mobile-nav-item" data-tab="tab-settings">
+      <span class="mobile-nav-icon">⚙️</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- ================= INGESTION MODAL (With File Drag & Drop!) ================= -->
+  <div id="modalIngest" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size:1.1rem; font-weight:800;">📥 Ingest Video or Audio</h3>
+        <button class="btn btn-ghost modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Direct File Upload Dropzone -->
+        <div id="dropzoneContainer" class="upload-dropzone">
+          <div style="font-size:2.2rem;">📁</div>
+          <div style="font-weight:800; font-size:0.95rem;">Drag & Drop Video or Audio File Here</div>
+          <p style="font-size:0.78rem; color:var(--text-muted);">Supports MP4, MP3, WAV, WebM, MOV</p>
+          <input type="file" id="mediaFileInput" accept="video/*,audio/*" style="display:none;">
+          <button id="btnBrowseFile" class="btn btn-primary" style="font-size:0.8rem;">Browse Computer Files</button>
+        </div>
+
+        <div style="text-align:center; font-size:0.75rem; color:var(--text-dim); font-weight:700;">— OR CHOOSE A PRE-LOADED MASTERCLASS —</div>
+
+        <div style="display:flex; gap:8px;">
+          <select id="demoSourceSelector" class="brand-selector" style="flex:1;"></select>
+          <button id="btnLoadDemoSource" class="btn btn-secondary">Load Masterclass</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
